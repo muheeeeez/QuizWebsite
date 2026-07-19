@@ -18,6 +18,8 @@ export default function QuizApp() {
   const [screen, setScreen] = useState<Screen>('home');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [questionCount, setQuestionCount] = useState<number>(20);
+  const [showCustomInput, setShowCustomInput] = useState(false);
+  const [customInputValue, setCustomInputValue] = useState('');
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -180,8 +182,8 @@ export default function QuizApp() {
                   <button
                     key={n}
                     id={`count-${n}`}
-                    className={questionCount === n ? styles.countBtnActive : styles.countBtn}
-                    onClick={() => setQuestionCount(n)}
+                    className={!showCustomInput && questionCount === n ? styles.countBtnActive : styles.countBtn}
+                    onClick={() => { setQuestionCount(n); setShowCustomInput(false); }}
                     disabled={n > availableCount}
                   >
                     {n}
@@ -189,12 +191,53 @@ export default function QuizApp() {
                 ))}
                 <button
                   id="count-all"
-                  className={questionCount === availableCount ? styles.countBtnActive : styles.countBtn}
-                  onClick={() => setQuestionCount(availableCount)}
+                  className={!showCustomInput && questionCount === availableCount ? styles.countBtnActive : styles.countBtn}
+                  onClick={() => { setQuestionCount(availableCount); setShowCustomInput(false); }}
                 >
                   All
                 </button>
+                <button
+                  id="count-custom"
+                  className={showCustomInput ? styles.countBtnActive : styles.countBtn}
+                  onClick={() => {
+                    setShowCustomInput(true);
+                    setCustomInputValue(String(questionCount));
+                  }}
+                >
+                  Custom
+                </button>
               </div>
+              {showCustomInput && (
+                <div className={styles.customInputRow}>
+                  <input
+                    id="custom-count-input"
+                    type="number"
+                    min={1}
+                    max={availableCount}
+                    value={customInputValue}
+                    autoFocus
+                    className={styles.customInput}
+                    placeholder={`1 – ${availableCount}`}
+                    onChange={(e) => setCustomInputValue(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        const val = Math.min(Math.max(1, parseInt(customInputValue) || 1), availableCount);
+                        setQuestionCount(val);
+                        setCustomInputValue(String(val));
+                        setShowCustomInput(false);
+                      }
+                      if (e.key === 'Escape') setShowCustomInput(false);
+                    }}
+                    onBlur={() => {
+                      const val = Math.min(Math.max(1, parseInt(customInputValue) || 1), availableCount);
+                      setQuestionCount(val);
+                      setCustomInputValue(String(val));
+                      setShowCustomInput(false);
+                    }}
+                  />
+                  <span className={styles.customInputHint}>Press Enter to confirm</span>
+                </div>
+              )}
             </div>
           </div>
 

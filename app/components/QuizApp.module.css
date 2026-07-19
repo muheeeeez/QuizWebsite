@@ -219,6 +219,51 @@
   box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3);
 }
 
+/* ── Custom Count Input ─────────────────────────────── */
+.customInputRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  animation: fadeSlideIn 0.2s ease;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.customInput {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  border: 1.5px solid rgba(56, 239, 125, 0.4);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -moz-appearance: textfield;
+}
+
+.customInput::-webkit-outer-spin-button,
+.customInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.customInput:focus {
+  border-color: #38ef7d;
+  box-shadow: 0 0 0 3px rgba(56, 239, 125, 0.2);
+}
+
+.customInputHint {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  white-space: nowrap;
+}
+
 /* ── Start Button ───────────────────────────────────── */
 .startBtn {
   width: 100%;
